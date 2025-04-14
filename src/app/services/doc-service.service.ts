@@ -12,7 +12,7 @@ export class DocServiceService {
 
   constructor(private http: HttpClient) {}
 
-  generateDocument(data:cambioDiagnostico) {
+  generateDocument(data:cambioDiagnostico): Observable<Blob> {
     return this.http.post(this.baseUrl, data, {
       responseType: 'blob'  
     });
