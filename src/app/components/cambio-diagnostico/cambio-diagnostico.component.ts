@@ -6,6 +6,9 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { TextareaModule } from 'primeng/textarea';
 import { DocServiceService } from '../../services/doc-service.service';
+import { DbRegistrosService } from '../../services/db-registros.service';
+import { GenericResponseDto } from '../../models/GenericResponseDto'; 
+import { cambioDiagnostico } from '../../models/cambioDiagnostico';
 
 @Component({
   selector: 'app-cambio-diagnostico',
@@ -18,7 +21,7 @@ export class CambioDiagnosticoComponent {
 
   formData: FormGroup;
 
-  constructor(private fb: FormBuilder, private docService: DocServiceService) {  //Implementar validacion en Campos
+  constructor(private fb: FormBuilder, private docService: DocServiceService, private dbService: DbRegistrosService ) {  //Implementar validacion en Campos
     this.formData = this.fb.group({
       servicio: ['', [Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
       numExpediente: ['', [Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
@@ -35,6 +38,18 @@ export class CambioDiagnosticoComponent {
     const raw = this.formData.getRawValue();
     raw.fechaAlta = new Date(raw.fechaAlta).toISOString().split('T')[0]; // Formatea la fecha antes de enviarla
 
+    this.dbService.createDiagnostico(raw).subscribe({
+      next: (response ) => {
+        console.log('Diagnóstico creado:', response);
+        this.documentGenerate(response.data);
+      },
+      error: (error) => {
+        console.error('Error al crear el diagnóstico:', error);
+      }
+    });
+  }
+
+  documentGenerate(raw: cambioDiagnostico) {
     this.docService.generateDocument(raw).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -48,6 +63,5 @@ export class CambioDiagnosticoComponent {
         console.error('Error al generar el documento:', err);
       }
     });
-
   }
 }

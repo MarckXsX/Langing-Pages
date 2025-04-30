@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { cambioDiagnostico } from '../models/cambioDiagnostico';
+import { Observable } from 'rxjs';
+import { GenericResponseDto } from '../models/GenericResponseDto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class DbRegistrosService {
 
   constructor(private http: HttpClient) { }
 
-  createDiagnostico(data: cambioDiagnostico) {
-    return this.http.post(this.baseUrl, data);
+  createDiagnostico(data: cambioDiagnostico): Observable<GenericResponseDto<cambioDiagnostico>> {
+    return this.http.post<GenericResponseDto<cambioDiagnostico>>(this.baseUrl, data);
   }
 }
