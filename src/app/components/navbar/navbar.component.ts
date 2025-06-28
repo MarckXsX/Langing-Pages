@@ -48,8 +48,8 @@ export class NavbarComponent implements OnInit {
             route: '/diagnosticos-usuarios'
           }
         ]
-      },
-      {
+      }
+      /*{
         label: 'Opcion 1',
         icon: 'pi pi-home',
         items: [
@@ -62,7 +62,7 @@ export class NavbarComponent implements OnInit {
             url: 'https://vitejs.dev/'
           }
         ]
-      }
+      }*/
     ];
   }
 
