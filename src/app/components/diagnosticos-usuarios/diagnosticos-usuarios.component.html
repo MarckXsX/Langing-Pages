@@ -1,0 +1,129 @@
+<app-navbar></app-navbar>
+<div class="bg-white dark:bg-gray-900 min-h-screen">
+  <div class="pt-10 pb-4 flex justify-center">
+    <h1
+      class="text-4xl font-bold text-gray-900 sm:text-5xl dark:text-white text-center"
+    >
+      ¡Bienvenido al apartado de gestion de
+      <strong class="text-indigo-600">Diagnosticos</strong>!
+    </h1>
+  </div>
+  <div class="flex justify-center py-24">
+    <div class="w-full max-w-5xl overflow-x-auto">
+      <p-table
+        [value]="CambioDiagnosticos"
+        [tableStyle]="{ 'min-width': '40rem' }"
+        [scrollable]="true"
+      >
+        <ng-template #header>
+          <tr>
+            <th>Id</th>
+            <th>Codigo CIE10</th>
+            <th>Servicio</th>
+            <th>Fecha de Alta</th>
+            <th>Diagnostico Egreso</th>
+            <th>Diagnostico Cambiado</th>
+            <th>Motico de Cambio</th>
+            <th>Estatus del Diagnostico</th>
+            <th style="width: 5rem">Opciones</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-diagnostico>
+          <tr>
+            <td>{{ diagnostico.id }}</td>
+            <td>{{ diagnostico.numExpediente }}</td>
+            <td>{{ diagnostico.servicio }}</td>
+            <td>{{ diagnostico.fechaAlta }}</td>
+            <td>{{ diagnostico.diagnosticoEgreso }}</td>
+            <td>{{ diagnostico.diagnosticoCambiado }}</td>
+            <td>{{ diagnostico.motivoNoCambio }}</td>
+            <td>{{ diagnostico.estatus }}</td>
+            <td>
+              <p-button
+                icon="pi pi-pencil"
+                (click)="openEditDialog(diagnostico)"
+                severity="info"
+                rounded
+              />
+              <p-button
+                icon="pi pi-trash"
+                (click)="deleteDiagnostico(diagnostico.id)"
+                severity="danger"
+                rounded
+              />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="9">No hay diagnósticos Pendientes para este usuario.</td>
+                </tr>
+              </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<!-- Modal para modificar el diagnostico -->
+<p-dialog
+  header="Editar Diagnóstico"
+  [(visible)]="editDialogVisible"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [breakpoints]="{ '1199px': '90vw', '575px': '98vw' }"
+  [closable]="true"
+  [dismissableMask]="false"
+>
+  <form [formGroup]="editForm" (ngSubmit)="saveEdit()">
+    <div class="flex items-center gap-4 mb-4">
+      <label class="w-24">Código CIE10</label>
+      <p-autoComplete
+        formControlName="numExpediente"
+        [suggestions]="cie10Results"
+        (completeMethod)="searchCie10($event)"
+        field="codigo"
+        [dropdown]="true"
+        [forceSelection]="true"
+        placeholder="Buscar código CIE10"
+        class="w-full"
+      >
+      </p-autoComplete>
+    </div>
+    <div class="flex items-center gap-4 mb-4">
+      <label for="servicio" class="w-24">Servicio</label>
+      <input
+        pInputText
+        id="servicio"
+        formControlName="servicio"
+        class="w-full"
+      />
+    </div>
+    <div class="flex items-center gap-4 mb-4">
+      <label class="w-24">Fecha de Alta</label>
+      <p-datepicker
+        formControlName="fechaAlta"
+        class="w-full"
+        dateFormat="yy-mm-dd"
+        [appendTo]="'body'"
+      ></p-datepicker>
+    </div>
+    <div class="flex items-center gap-4 mb-4">
+      <label class="w-24">Diagnóstico de Egreso</label>
+      <input pInputText formControlName="diagnosticoEgreso" class="w-full" />
+    </div>
+    <div class="flex items-center gap-4 mb-4">
+      <label class="w-24">Diagnóstico Cambiado</label>
+      <input pInputText formControlName="diagnosticoCambiado" class="w-full" />
+    </div>
+    <div class="flex items-center gap-4 mb-4">
+      <label class="w-24">Motivo No Cambio</label>
+      <input pInputText formControlName="motivoNoCambio" class="w-full" />
+    </div>
+    <button
+      pButton
+      type="submit"
+      label="Guardar"
+      [disabled]="editForm.invalid || isSaving"
+      [loading]="isSaving"
+    ></button>
+  </form>
+</p-dialog>

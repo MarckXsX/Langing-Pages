@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -7,23 +6,23 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-navbar-admin',
   imports: [Menubar, CommonModule, RouterLink, ButtonModule],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  templateUrl: './navbar-admin.component.html',
+  styleUrl: './navbar-admin.component.css'
 })
-export class NavbarComponent implements OnInit {
+export class NavbarAdminComponent implements OnInit {
 
   items: MenuItem[] | undefined;
 
-  constructor(
+ constructor(
     private router: Router, 
     private readonly authService: AuthService,
     private readonly toastService: ToastService) {
   }
-
 
   ngOnInit(): void {
     this.items = [
@@ -36,37 +35,29 @@ export class NavbarComponent implements OnInit {
         }
       },
       {
-        label: 'Registros',
+        label: 'Usuarios',
         icon: 'pi pi-fw pi-file',
         items: [
           {
-            label: 'Cambio Diagnóstico',
-            route: '/cambio-diagnostico'
-          },
-          {
-            label: 'Historial de Diagnósticos',
-            route: '/diagnosticos-usuarios'
+            label: 'Datos Usuario',
+            route: '/data-usuarios'
           }
         ]
       },
       {
-        label: 'Opcion 1',
-        icon: 'pi pi-home',
+        label: 'Diagnosticos',
+        icon: 'pi pi-fw pi-file',
         items: [
           {
-            label: 'Angular',
-            url: 'https://angular.io/'
-          },
-          {
-            label: 'Vite.js',
-            url: 'https://vitejs.dev/'
+            label: 'Diagnosticos Usuarios',
+            route: '/diagnosticos'
           }
         ]
       }
     ];
   }
 
-  logout(){
+   logout(){
     this.authService.logout().subscribe({
       next: (response) => {
         console.log('Logout successful', response);

@@ -1,10 +1,22 @@
+@if(user?.role?.name === 'ROLE_ADMIN'){
+  <app-navbar-admin></app-navbar-admin>
+}@else {
+  <app-navbar></app-navbar>
+}
 <section class="bg-white dark:bg-gray-900 min-h-screen flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
     <div class="w-full max-w-3xl text-center">
-  
-      <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl dark:text-white">
-        ¡Bienvenido al sistema de gestion de
-        <strong class="text-indigo-600">Documentos</strong>!
-      </h1>
+
+      @if(user){
+        <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl dark:text-white">
+          ¡Bienvenido {{user.userName}} al sistema de gestion de
+          <strong class="text-indigo-600">Documentos</strong>!
+        </h1>
+      }@else {
+        <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl dark:text-white">
+          ¡Bienvenido al sistema de gestion de
+          <strong class="text-indigo-600">Documentos</strong>!
+        </h1>
+      }
   
       <p class="mt-6 text-lg text-gray-700 dark:text-gray-300">
         Tiene como proposito la gestión de documentos y generacion de archivo para su respectivo
@@ -12,7 +24,7 @@
         organizada. Con una interfaz intuitiva y fácil de usar.
       </p>
   
-      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+      <!--- <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
         <a
           class="inline-block rounded border border-indigo-600 bg-indigo-600 px-6 py-3 font-medium text-white shadow transition hover:bg-indigo-700"
           href="#"
@@ -26,7 +38,7 @@
         >
           Mayor informacion
         </a>
-      </div>
+      </div> -->
   
     </div>
   </section>
